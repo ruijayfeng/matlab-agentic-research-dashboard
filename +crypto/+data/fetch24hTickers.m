@@ -1,0 +1,29 @@
+function tickers = fetch24hTickers(symbols)
+%FETCH24HTICKERS Fetch Binance 24h ticker data for requested symbols.
+    arguments
+        symbols (1,:) string = crypto.data.defaultSymbols()
+    end
+
+    baseUrl = "https://api.binance.com/api/v3/ticker/24hr";
+    tickers = table(strings(0,1), zeros(0,1), zeros(0,1), zeros(0,1), zeros(0,1), zeros(0,1), zeros(0,1), ...
+        'VariableNames', {'Symbol', 'LastPrice', 'PriceChangePercent', 'Volume', 'QuoteVolume', 'HighPrice', 'LowPrice'});
+
+    for idx = 1:numel(symbols)
+        symbol = upper(symbols(idx));
+        try
+            raw = webread(char(baseUrl), 'symbol', char(symbol));
+        catch err
+            error("crypto:data:TickerFetchFailed", "Failed to fetch Binance 24h ticker for %s: %s", symbol, err.message);
+        end
+
+        tickers = [tickers; table( ...
+            string(raw.symbol), ...
+            str2double(raw.lastPrice), ...
+            str2double(raw.priceChangePercent), ...
+            str2double(raw.volume), ...
+            str2double(raw.quoteVolume), ...
+            str2double(raw.highPrice), ...
+            str2double(raw.lowPrice), ...
+            'VariableNames', tickers.Properties.VariableNames)]; %#ok<AGROW>
+    end
+end

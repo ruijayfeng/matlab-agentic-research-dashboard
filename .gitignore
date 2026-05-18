@@ -1,0 +1,4 @@
+.superpowers/
+exports/
+config.local.json
+cache/
