@@ -15,7 +15,7 @@
 
 ## Use Cases
 
-- MATLAB course design, capstone projects, and fintech experiments
+- Fintech experiments, research prototypes, and personal research tools
 - Multi-asset market monitoring and investment research prototypes
 - Crypto, ETF, and gold cross-asset linkage analysis
 - Portfolio risk, stress testing, and position management education
@@ -122,10 +122,6 @@ Latest local verification:
 ```text
 41 Passed, 0 Failed, 0 Incomplete
 ```
-
-## Course Report
-
-See [docs/course-design-report.md](docs/course-design-report.md).
 
 ## Disclaimer
 

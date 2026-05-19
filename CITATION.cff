@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 title: "MATLAB Agentic Research Dashboard"
-message: "If you use this project for coursework, research, or demos, please cite it using the metadata in this file."
+message: "If you use this project for research, demos, or derivative software, please cite it using the metadata in this file."
 type: software
 authors:
   - family-names: "Feng"
