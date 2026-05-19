@@ -33,11 +33,14 @@ classdef CryptoAssetDashboardApp < handle
         RiskContributionTable matlab.ui.control.Table
         StrategyScoreTable matlab.ui.control.Table
         PortfolioSummaryLabel matlab.ui.control.Label
+        AgentCardsTextArea matlab.ui.control.TextArea
+        IntegratedRecommendationTextArea matlab.ui.control.TextArea
         LatestTickers table
         LatestCandles table
         PortfolioPositions table
         LatestPortfolio table
         LatestSummary struct
+        LatestAgentRun struct = struct()
         LatestAnalysisCandles struct = struct()
         LatestAnalysisContext struct = struct()
         LatestAnalysisResult struct = struct()
@@ -217,14 +220,28 @@ classdef CryptoAssetDashboardApp < handle
             app.configureAxesInteraction(app.CrossAssetIndicatorAxes);
 
             aiTab = uitab(chartTabs, "Title", "AI分析");
-            aiPanel = uigridlayout(aiTab, [6 1]);
-            aiPanel.RowHeight = {28, 90, 90, 76, 110, "1x"};
+            aiPanel = uigridlayout(aiTab, [8 2]);
+            aiPanel.RowHeight = {28, 86, 86, 150, "2x", 76, 110, 120};
+            aiPanel.ColumnWidth = {"1x", "1x"};
             aiPanel.Padding = [6 6 6 6];
             aiPanel.RowSpacing = 8;
+            aiPanel.ColumnSpacing = 8;
             uilabel(aiPanel, "Text", "MATLAB 计算依据 + DeepSeek 持仓风险报告", "FontWeight", "bold");
             app.HoldingImpactTextArea = uitextarea(aiPanel, "Editable", "off");
+            app.HoldingImpactTextArea.Layout.Row = 2;
+            app.HoldingImpactTextArea.Layout.Column = 1;
             app.MarketLinkageTextArea = uitextarea(aiPanel, "Editable", "off");
+            app.MarketLinkageTextArea.Layout.Row = 3;
+            app.MarketLinkageTextArea.Layout.Column = 1;
+            app.IntegratedRecommendationTextArea = uitextarea(aiPanel, "Editable", "off", "FontName", "Consolas", "FontSize", 13);
+            app.IntegratedRecommendationTextArea.Layout.Row = 4;
+            app.IntegratedRecommendationTextArea.Layout.Column = [1 2];
+            app.AgentCardsTextArea = uitextarea(aiPanel, "Editable", "off", "FontName", "Consolas", "FontSize", 13);
+            app.AgentCardsTextArea.Layout.Row = 5;
+            app.AgentCardsTextArea.Layout.Column = [1 2];
             stressPanel = uigridlayout(aiPanel, [1 5]);
+            stressPanel.Layout.Row = 6;
+            stressPanel.Layout.Column = [1 2];
             stressPanel.ColumnWidth = {"1x", "1x", "1x", "1x", "2x"};
             stressPanel.Padding = [0 0 0 0];
             uibutton(stressPanel, "Text", "加密回撤", "ButtonPushedFcn", @(~,~) app.runStressScenario("crypto"));
@@ -234,9 +251,15 @@ classdef CryptoAssetDashboardApp < handle
             app.StressTextArea = uitextarea(stressPanel, "Editable", "off", "Value", app.textAreaValue("压力测试：请选择情景。"));
             app.StrategyScoreTable = uitable(aiPanel);
             app.StrategyScoreTable.ColumnName = {'资产', '裸K', '趋势', '均值回归', '联动', '持仓影响', '估值', '综合分', '结论'};
+            app.StrategyScoreTable.Layout.Row = 7;
+            app.StrategyScoreTable.Layout.Column = [1 2];
             app.AnalysisTextArea = uitextarea(aiPanel, "Editable", "off", "FontName", "Consolas", "FontSize", 13);
+            app.AnalysisTextArea.Layout.Row = 8;
+            app.AnalysisTextArea.Layout.Column = 1;
             app.RiskContributionTable = uitable(aiPanel);
             app.RiskContributionTable.ColumnName = {'资产', '类别', '权重', '20日波动', '风险分数', '风险贡献'};
+            app.RiskContributionTable.Layout.Row = 8;
+            app.RiskContributionTable.Layout.Column = 2;
             chartTabs.SelectedTab = aiTab;
 
             rightPanel = uigridlayout(root, [3 1]);
@@ -251,9 +274,11 @@ classdef CryptoAssetDashboardApp < handle
             app.PortfolioTable.ColumnName = {'Symbol', 'Class', 'Qty', 'Last', 'Value', 'PnL', 'PnL %', 'Alloc'};
 
             notesValue = app.textAreaValue({ ...
-                'AI 分析资产池：BTCUSDT / ETHUSDT / SOLUSDT / SPY / QQQ / GLD。', ...
-                '分析依据来自 MATLAB 计算的持仓风险、跨资产相关性、波动、异常收益和相对强弱。', ...
-                '点击 AI分析 按钮可调用 DeepSeek，自动刷新仅更新本地规则分析。'});
+                'Agent Workbench 资产池：BTCUSDT / ETHUSDT / SOLUSDT / SPY / QQQ / GLD。', ...
+                '优先阅读“综合建议”：这里会直接给出市场判断、仓位动作、加仓/减仓方向和重点观察条件。', ...
+                'Agent 集群按角色拆分输出：数据质检、技术面、组合风控、跨资产联动和反方审查。', ...
+                '在左侧持仓表编辑 Qty 和 Cost 后刷新，组合风险、压力测试和 Agent 结论会同步更新。', ...
+                '点击 AI分析 可调用 DeepSeek 生成中文报告；自动刷新只更新 MATLAB Agent 本地分析。'});
             notes = uitextarea(root, "Editable", "off", "Value", notesValue);
             notes.Layout.Row = 3;
             notes.Layout.Column = [1 3];
@@ -378,6 +403,23 @@ classdef CryptoAssetDashboardApp < handle
             else
                 lines = strings(0, 1);
             end
+            if ~isempty(fieldnames(app.LatestAgentRun))
+                lines = [
+                    lines;
+                    "Agent Workbench";
+                    string(app.LatestAgentRun.RunId);
+                    "";
+                    "Consensus";
+                    string(app.LatestAgentRun.Consensus);
+                    "";
+                    "Disagreements";
+                    string(app.LatestAgentRun.Disagreements);
+                    "";
+                    "Action Watchlist";
+                    string(app.LatestAgentRun.ActionWatchlist);
+                    ""
+                    ];
+            end
             if ~isempty(fieldnames(app.LatestAnalysisResult)) && isfield(app.LatestAnalysisResult, 'Text')
                 lines = [lines; splitlines(string(app.LatestAnalysisResult.Text))];
             elseif ~isempty(app.LatestSummary) && isfield(app.LatestSummary, 'Text')
@@ -400,6 +442,7 @@ classdef CryptoAssetDashboardApp < handle
                 lines = [lines; portfolioLines];
             end
             app.AnalysisTextArea.Value = app.textAreaValue(lines);
+            app.renderAgentWorkbench();
             app.renderStrategyScoreTable();
             app.renderRiskContributionTable();
             app.renderStressResult();
@@ -417,6 +460,19 @@ classdef CryptoAssetDashboardApp < handle
             end
             app.HoldingImpactTextArea.Value = app.textAreaValue(crypto.analysis.formatHoldingImpact(app.LatestAnalysisContext));
             app.MarketLinkageTextArea.Value = app.textAreaValue(crypto.analysis.formatMarketLinkage(app.LatestAnalysisContext));
+        end
+
+        function renderAgentWorkbench(app)
+            if isempty(app.AgentCardsTextArea) || isempty(app.IntegratedRecommendationTextArea)
+                return
+            end
+            if isempty(fieldnames(app.LatestAgentRun))
+                app.AgentCardsTextArea.Value = app.textAreaValue("Agent 集群输出：等待分析。");
+                app.IntegratedRecommendationTextArea.Value = app.textAreaValue("综合建议：等待 Agent 集群完成分析。");
+                return
+            end
+            app.AgentCardsTextArea.Value = app.textAreaValue(crypto.agents.formatCards(app.LatestAgentRun));
+            app.IntegratedRecommendationTextArea.Value = app.textAreaValue(app.LatestAgentRun.IntegratedRecommendation);
         end
 
         function renderStrategyScoreTable(app)
@@ -714,6 +770,7 @@ classdef CryptoAssetDashboardApp < handle
                 app.LatestAnalysisCandles = app.loadAnalysisCandles();
                 app.LatestAnalysisContext = crypto.analysis.buildContext(app.LatestTickers, app.LatestAnalysisCandles, app.LatestPortfolio);
                 app.LatestAnalysisContext = app.attachStressToContext(app.LatestAnalysisContext);
+                app.LatestAgentRun = crypto.agents.runResearchAgents(app.LatestAnalysisContext);
                 app.LatestAnalysisResult = crypto.analysis.analyzeContext(app.LatestAnalysisContext);
                 if useDeepSeek
                     deepSeekResult = crypto.analysis.deepSeekAnalyzeContext(app.LatestAnalysisContext);
