@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+title: "MATLAB Agentic Research Dashboard"
+message: "If you use this project for coursework, research, or demos, please cite it using the metadata in this file."
+type: software
+authors:
+  - family-names: "Feng"
+    given-names: "Ruijay"
+    alias: "ruijayfeng"
+repository-code: "https://github.com/ruijayfeng/matlab-agentic-research-dashboard"
+url: "https://github.com/ruijayfeng/matlab-agentic-research-dashboard"
+abstract: "A MATLAB-native multi-asset intelligent research dashboard with agentic AI analysis, technical indicators, portfolio risk, crypto market data, and optional DeepSeek reports."
+keywords:
+  - MATLAB
+  - agentic AI
+  - quantitative finance
+  - multi-asset research
+  - portfolio risk
+  - technical analysis
+  - crypto dashboard
+  - investment research
+license: MIT
+date-released: "2026-05-19"

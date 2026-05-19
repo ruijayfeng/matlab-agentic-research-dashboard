@@ -13,6 +13,23 @@
 
 `MATLAB` · `agentic AI` · `multi-asset research` · `quantitative finance` · `portfolio risk` · `technical analysis` · `crypto dashboard` · `investment research` · `DeepSeek` · `financial technology`
 
+## Use Cases
+
+- MATLAB course design, capstone projects, and fintech experiments
+- Multi-asset market monitoring and investment research prototypes
+- Crypto, ETF, and gold cross-asset linkage analysis
+- Portfolio risk, stress testing, and position management education
+- Local Agentic AI workflows for financial research
+- DeepSeek and MATLAB hybrid analysis demos
+
+## Why This Project
+
+- MATLAB-native implementation with no heavy web frontend dependency
+- End-to-end workflow from market data to agentic research recommendations
+- Explainable Agent cluster instead of one black-box text output
+- Tested MATLAB package structure using `matlab.unittest`
+- Easy to extend with equities, macro data, news, backtesting, or external Agent services
+
 ## Overview
 
 MATLAB Agentic Research Dashboard is a desktop research workbench built with MATLAB UI components and package-based modules. It monitors crypto and cross-asset markets, calculates technical and portfolio risk metrics, and uses a MATLAB-native Agent cluster to convert structured market evidence into readable research guidance.
@@ -116,4 +133,4 @@ This project is for education, research, and software engineering practice. It d
 
 ## License
 
-License has not been selected yet. Recommended options: MIT, Apache-2.0, or GPL-3.0.
+This project is released under the MIT License. See [LICENSE](LICENSE).
