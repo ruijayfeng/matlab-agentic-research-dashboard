@@ -2,9 +2,18 @@
 
 > 基于 MATLAB 的多资产智能投研看板，集行情监控、技术分析、组合风控、跨资产联动、压力测试与 Agent 集群投研建议于一体。
 
+[![MATLAB](https://img.shields.io/badge/MATLAB-Agentic%20Research-orange)](https://www.mathworks.com/products/matlab.html)
+[![Finance](https://img.shields.io/badge/Finance-Multi--Asset-blue)](#核心特性)
+[![Agentic AI](https://img.shields.io/badge/Agentic%20AI-Research%20Dashboard-green)](#agent-工作流)
+[![Tests](https://img.shields.io/badge/tests-41%20passed-brightgreen)](#测试状态)
+
 **语言 / Language:** [中文 README](README.md) | [English README](README_EN.md)
 
 ---
+
+## 关键词
+
+`MATLAB` · `多资产投研` · `智能投研看板` · `Agent 集群` · `量化分析` · `金融科技` · `技术指标` · `组合风控` · `跨资产联动` · `加密资产分析` · `DeepSeek` · `投资研究工具`
 
 ## 项目简介
 
@@ -239,4 +248,3 @@ setenv("ALPHAVANTAGE_API_KEY", "your-key")
 - MIT License：适合最大化复用
 - Apache-2.0：包含更明确的专利授权条款
 - GPL-3.0：要求衍生项目继续开源
-

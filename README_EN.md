@@ -2,7 +2,16 @@
 
 > A MATLAB-native multi-asset research dashboard powered by agentic analysis.
 
+[![MATLAB](https://img.shields.io/badge/MATLAB-Agentic%20Research-orange)](https://www.mathworks.com/products/matlab.html)
+[![Finance](https://img.shields.io/badge/Finance-Multi--Asset-blue)](#key-features)
+[![Agentic AI](https://img.shields.io/badge/Agentic%20AI-Research%20Dashboard-green)](#key-features)
+[![Tests](https://img.shields.io/badge/tests-41%20passed-brightgreen)](#testing-status)
+
 **Language:** [中文 README](README.md) | [English README](README_EN.md)
+
+## Keywords
+
+`MATLAB` · `agentic AI` · `multi-asset research` · `quantitative finance` · `portfolio risk` · `technical analysis` · `crypto dashboard` · `investment research` · `DeepSeek` · `financial technology`
 
 ## Overview
 
@@ -108,4 +117,3 @@ This project is for education, research, and software engineering practice. It d
 ## License
 
 License has not been selected yet. Recommended options: MIT, Apache-2.0, or GPL-3.0.
-
